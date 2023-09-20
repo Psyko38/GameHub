@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lanceur de jeux</title>
+</head>
+<body>
+    <h1>Liste des jeux :</h1>
+    <ul id="game-list"></ul>
+
+    <script>
+        // Fonction pour lire le contenu du fichier
+        function readTextFile(file, callback) {
+            var rawFile = new XMLHttpRequest();
+            rawFile.open("GET", file, true);
+            rawFile.onreadystatechange = function() {
+                if (rawFile.readyState === 4 && (rawFile.status === 200 || rawFile.status === 0)) {
+                    var allText = rawFile.responseText;
+                    callback(allText);
+                }
+            }
+            rawFile.send(null);
+        }
+
+        // Fonction pour afficher les jeux sur la page web
+        function displayGames(text) {
+            var gameList = document.getElementById("game-list");
+            var games = text.split("\n");
+            for (var i = 0; i < games.length; i++) {
+                var game = games[i];
+                if (game.trim() !== "") {
+                    var listItem = document.createElement("li");
+                    var link = document.createElement("a");
+                    link.href = game;
+                    link.textContent = game;
+                    listItem.appendChild(link);
+                    gameList.appendChild(listItem);
+                }
+            }
+        }
+
+        // Lecture du fichier et affichage des jeux
+        readTextFile("game.txt", displayGames);
+    </script>
+</body>
+</html>
